@@ -1,0 +1,63 @@
+﻿@page "/"
+@using MyTodo.Todo.Web.Models
+@using MyTodo.Todo.Web.Services
+
+@inject ITodoItemsService TodoItemsService;
+
+
+@if (data is null)
+{
+    <div class="row">
+        <div class="cell-3 offset-4">
+            <div data-role="activity" data-type="cycle" data-style="color" style="margin: 0 auto"></div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="cell-3 offset-4">
+            <div>
+                @foreach (var item in data?.Data)
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            @item.Name
+                        </div>
+                        <div class="card-content">
+                            IsComplete: @item.IsComplete
+                        </div>
+                        <div class="card-footer">
+                            <button class="button info" @onclick="(async () => await Complete(item.Id))">Completed</button>
+                            <button class="button alert" @onclick="(async () => await Delete(item.Id))">Delete</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@code
+{
+    private ApiPagesResponse<IEnumerable<TodoItems>> data;
+
+    protected override async Task OnInitializedAsync()
+    {
+        data = await TodoItemsService.GetTodoItemsAsync();
+    }
+
+    public async Task Delete(int id)
+    {
+        await TodoItemsService.DeleteTodoItemsAsync(id);
+    }
+
+    public async Task Complete(int id)
+    {
+        var todoItem = data.Data.Where(x => x.Id == id).Single();
+
+        todoItem.IsComplete = true;
+
+        await TodoItemsService.UpdateTodoItemsAsync(todoItem);
+    }
+}

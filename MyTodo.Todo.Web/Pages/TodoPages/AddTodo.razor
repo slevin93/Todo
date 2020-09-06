@@ -1,0 +1,30 @@
+﻿@page "/add-todo"
+
+@using MyTodo.Todo.Web.Models
+@using MyTodo.Todo.Web.Services
+
+@inject ITodoItemsService TodoItemsService;
+
+<div class="row">
+    <div class="cell-3 offset-4">
+        <form>
+            <div class="form-group">
+                <input placeholder="Todo Item" @bind="addItem.Name" />
+            </div>
+            <div class="form-group">
+                <button class="button success" @onclick="(async () => await AddItem())">Save</button>
+                <a href="/" class="button">Back</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@code {
+    private TodoItems addItem = new TodoItems();
+
+    private async Task AddItem()
+    {
+        if (!string.IsNullOrWhiteSpace(addItem.Name))
+            await TodoItemsService.AddTodoItemAsync(addItem);
+    }
+}

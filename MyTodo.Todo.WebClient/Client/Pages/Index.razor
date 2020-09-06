@@ -1,0 +1,38 @@
+﻿@page "/"
+@using MyTodo.Todo.WebClient.Shared
+@inject HttpClient Http
+
+<h1>Todo</h1>
+
+<div class="row">
+    @if (todoItems is null)
+    {
+        <div class="row">
+            <p><em>Loading...</em></p>
+        </div>
+    }
+    else
+    {
+        foreach (var item in todoItems.Data)
+        {
+            <div class="row">
+                <div class="card">
+                    <div class="card-body">
+                        <p>@item.Name</p>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@code{
+
+    private ApiResult<IEnumerable<TodoItems>> todoItems;
+
+    protected override async Task OnInitializedAsync()
+    {
+        todoItems = await Http.GetFromJsonAsync<ApiResult<IEnumerable<TodoItems>>>("https://localhost:9001/api/v1/Todo");
+    }
+
+}

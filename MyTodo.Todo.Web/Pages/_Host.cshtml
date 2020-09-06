@@ -1,0 +1,39 @@
+﻿@page "/"
+@namespace MyTodo.Todo.Web.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MyTodo</title>
+    <base href="~/" />
+    <link href="~/metro/css/metro.css" rel="stylesheet" />
+    <link href="~/metro/css/metro-all.css" rel="stylesheet" />
+</head>
+<body>
+
+    <ul class="h-menu">
+        <li><a href="/">Home</a></li>
+        <li><a href="/add-todo">Add Todo</a></li>
+    </ul>
+
+    <div class="grid">
+    <div class="row">
+    <div class="cell-3 offset-3">
+        <h1 class="text-center">MyTodos</h1>
+        </div>
+    </div>
+
+    <app>
+        <component type="typeof(App)" render-mode="ServerPrerendered" />
+    </app>
+    </div>
+    <script src="~/metro/js/metro.js"></script>
+    <script src="_framework/blazor.server.js"></script>
+</body>
+</html>
